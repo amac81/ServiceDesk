@@ -219,8 +219,12 @@ ServiceDesk is being built as a practical full-stack software engineering projec
 
 ## License
 
-The project license has not yet been specified. Licensing information will be added once the license is selected.
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/amac81/ServiceDesk/blob/main/LICENSE) 
 
 ## Author
+
+Arnaldo Manuel de Almeida Canelas
+
+https://www.linkedin.com/in/arnaldocanelas
 
 Developed as a portfolio project to demonstrate full-stack application development with Java, Spring Boot, React, and TypeScript.
