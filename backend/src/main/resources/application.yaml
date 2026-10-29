@@ -1,3 +1,27 @@
 spring:
   application:
     name: servicedesk-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/servicedesk
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
