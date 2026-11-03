@@ -1,5 +1,6 @@
 package dev.amac.servicedesk.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import dev.amac.servicedesk.entities.enums.TicketPriority;
@@ -23,7 +24,9 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_ticket")
-public class Ticket {
+public class Ticket  implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,10 +68,10 @@ public class Ticket {
     @JoinColumn(name = "assigned_group_id")
     private SupportGroup assignedGroup;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_category_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ticket_category_id", nullable = false)
     private TicketCategory ticketCategory;
-
+    
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -253,6 +256,4 @@ public class Ticket {
 	public void setResolution(String resolution) {
 		this.resolution = resolution;
 	}
-
-    
 }

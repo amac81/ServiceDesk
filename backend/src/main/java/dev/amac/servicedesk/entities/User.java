@@ -1,13 +1,19 @@
 
 package dev.amac.servicedesk.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -17,7 +23,9 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_user")
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +60,9 @@ public class User {
 
     @Column(nullable = false)
     private Instant updatedAt;
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<SupportGroupMember> supportGroupMembers = new HashSet<>();
 
     protected User() {
         // Construtor exigido pelo JPA
@@ -128,6 +139,13 @@ public class User {
 
     public Instant getUpdatedAt() {
         return updatedAt;
+    }
+    
+    //SupportGroups in which this user is
+    public List<SupportGroup> getSupportGroups() {
+        return supportGroupMembers.stream()
+            .map(SupportGroupMember::getSupportGroup)
+            .toList();
     }
 
     @Override

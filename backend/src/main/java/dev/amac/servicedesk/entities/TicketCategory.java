@@ -1,13 +1,18 @@
 
 package dev.amac.servicedesk.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -16,7 +21,9 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_ticket_category")
-public class TicketCategory {
+public class TicketCategory implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +51,9 @@ public class TicketCategory {
 
     @Column(nullable = false)
     private Instant updatedAt;
+    
+    @OneToMany(mappedBy = "ticketCategory", fetch = FetchType.LAZY)	
+	private Set<Ticket> tickets = new HashSet<>();
 
     protected TicketCategory() {
         // Construtor exigido pelo JPA
@@ -110,4 +120,8 @@ public class TicketCategory {
     public Instant getUpdatedAt() {
         return updatedAt;
     }
+    
+    public Set<Ticket> getTickets() {
+		return tickets;
+	}
 }
