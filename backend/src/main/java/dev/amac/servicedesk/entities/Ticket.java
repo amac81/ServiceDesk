@@ -2,6 +2,10 @@ package dev.amac.servicedesk.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import dev.amac.servicedesk.entities.enums.TicketPriority;
 import dev.amac.servicedesk.entities.enums.TicketStatus;
@@ -16,6 +20,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -85,7 +90,22 @@ public class Ticket  implements Serializable {
 
     @Column(columnDefinition = "TEXT")
     private String resolution;
+    
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
+    private Set<TicketComment> comments = new HashSet<>();
+    
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
+    private Set<TicketAttachment> attachments = new HashSet<>();
+    
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
+    private Set<TicketHistory> history = new HashSet<>();
 
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
+    private Set<TicketWatcher> watchers = new HashSet<>();
+    
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
+    private Set<TicketWorklog> worklogs = new HashSet<>();
+    
     protected Ticket() {
         // Construtor exigido pelo JPA
     }
@@ -255,5 +275,21 @@ public class Ticket  implements Serializable {
 
 	public void setResolution(String resolution) {
 		this.resolution = resolution;
+	}
+	
+	public Set<TicketAttachment> getAttachments() {
+	    return attachments;
+	}
+	
+	public List<TicketHistory> getHistory() {
+	    return new ArrayList<>(history);
+	}
+	
+	public List<TicketWatcher> getWatchers() {
+	    return new ArrayList<>(watchers);
+	}
+	
+	public List<TicketWorklog> getWorklogs() {
+	    return new ArrayList<>(worklogs);
 	}
 }

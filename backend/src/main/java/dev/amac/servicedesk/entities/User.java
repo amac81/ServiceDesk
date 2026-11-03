@@ -3,6 +3,7 @@ package dev.amac.servicedesk.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,7 +64,22 @@ public class User implements Serializable {
     
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<SupportGroupMember> supportGroupMembers = new HashSet<>();
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<TicketComment> ticketComments = new HashSet<>();
+    
+    @OneToMany(mappedBy = "uploadedBy", fetch = FetchType.LAZY)
+    private Set<TicketAttachment> uploadedAttachments = new HashSet<>();
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<TicketHistory> ticketHistory = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<TicketWatcher> watchedTickets = new HashSet<>();
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<TicketWorklog> ticketWorklogs = new HashSet<>();
+            
     protected User() {
         // Construtor exigido pelo JPA
     }
@@ -147,7 +163,28 @@ public class User implements Serializable {
             .map(SupportGroupMember::getSupportGroup)
             .toList();
     }
+    
+    // Returns the ticket comments made by this user
+    public List<TicketComment> getTicketComments() {
+        return new ArrayList<>(ticketComments);
+    }
 
+    public Set<TicketAttachment> getUploadedAttachments() {
+        return uploadedAttachments;
+    }
+    
+    public List<TicketHistory> getTicketHistory() {
+        return new ArrayList<>(ticketHistory);
+    }
+    
+    public List<TicketWatcher> getWatchedTickets() {
+        return new ArrayList<>(watchedTickets);
+    }
+
+    public List<TicketWorklog> getTicketWorklogs() {
+        return new ArrayList<>(ticketWorklogs);
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
